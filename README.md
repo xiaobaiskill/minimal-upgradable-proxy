@@ -3,7 +3,7 @@
 
 ### 创建可升级代理合约的 汇编代码
 ```
-# store logic address to logic slot
+# store logic address to slot of proxy contract
 PUSH1 0x20           [20]
 DUP1                 [20 20]
 PUSH1 0x40           [40 20 20]

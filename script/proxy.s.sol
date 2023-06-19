@@ -6,6 +6,7 @@ import "src/mock/SimV1.sol";
 import "src/mock/SimV2.sol";
 
 // forge script -f "https://data-seed-prebsc-1-s1.binance.org:8545" script/proxy.s.sol --broadcast
+// forge verify-contract  --verifier-url "https://api-goerli.etherscan.io/api" 0x35700366da1b884ddfa28cf3d5483975b029f49c src/mock/SimV2.sol:SimV2
 contract ProxyScript is Script {
     bytes constant proxyCode =
         hex"602080604038033d39808038038139513d51553d51603a80602460403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3";

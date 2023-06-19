@@ -15,7 +15,7 @@ contract DeployContractTest is Test {
 
     function testProxy() public {
         SimV1 v1 = new SimV1(11);
-        address proxy = dc.createContract(address(v1), hex"01");
+        address proxy = dc.createContract(address(v1));
 
         SimV1(proxy).init();
         SimV1(proxy).setNumber(12);
