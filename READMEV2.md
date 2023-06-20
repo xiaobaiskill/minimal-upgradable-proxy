@@ -1,35 +1,22 @@
 minimal upgradable proxy
 ---
-add a slot of 32 bytes and an address of 32 bytes at the end of the bytecode when deploying contract, completed the creation of the proxy contract 
+
+replace `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` to a slot of 32bytes and replace `yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy` to a address of 20bytes before deploying contract 
+
 ### create upgradable proxy contract
 ```
 # store logic address to slot of proxy contract
-PUSH1 0x20           [20]
-DUP1                 [20 20]
-PUSH1 0x40           [40 20 20]
-CODESIZE             [codesize 40 20 20]
-SUB                  [slotOffset 20 20]
-RETURNDATASIZE       [00 slotOffset 20 20]
-CODECOPY             [20]                  => memory(0~0x20: slot)
-DUP1                 [20 20]
-DUP1                 [20 20 20]
-CODESIZE             [codesize 20 20 20]
-SUB                  [logicAddressOffset 20 20]
-DUP2                 [20 logicAddressOffset 20 20]
-CODECOPY             [20]                  => memory(0x20~0x40: logicAddress)
-MLOAD                [logicAddress]
-RETURNDATASIZE       [00 logicAddress]
-MLOAD                [slot logicAddress]
-SSTORE               []              ==> storage(slot => logicAddress)
+PUSH32 <slot>          [slot]
+PUSH20 <logicAddress>  [logicAddress slot]
+DUP2                   [slot logicAddress slot]
+SSTORE                 [slot]                  => storage(slot => logicAddress)
 
 # return deployedCode
-RETURNDATASIZE       [00]
-MLOAD                [slot]
 PUSH1 0x3a           [3a slot]
 DUP1                 [3a 3a slot]
-PUSH1 0x24           [24 3a 3a slot]  
-PUSH1 0x40           [40 24 3a 3a slot]
-CODECOPY             [3a slot]  ==> memory(0x40~0x7a: 24~3a(deployedCode))
+PUSH1 0x47           [27 3a 3a slot]  
+PUSH1 0x40           [40 47 3a 3a slot]
+CODECOPY             [3a slot]  ==> memory(0x40~0x7a: 47~3a(deployedCode))
 SWAP1                [slot 3a]
 PUSH1 0x4a           [4a slot 3a]               
 MSTORE               [3a]      => memory(4a => slot)
@@ -66,7 +53,7 @@ RETURN              [result 00]
 
 * bytecode
 ```
-602080604038033d39808038038139513d51553d51603a80602460403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3
+7fxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx73yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy8155603a80604760403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3
 ```
 
 * deployed code 
