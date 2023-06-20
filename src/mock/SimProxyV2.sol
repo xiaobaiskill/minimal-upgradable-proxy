@@ -9,6 +9,7 @@ contract SimProxyV2 is Proxy {
     uint256 public number;
 
     constructor() payable {
+        // deploying proxy contract by logic contract
         bytes memory code = abi.encodePacked(
             hex"7f",
             getImplementSlot(),
