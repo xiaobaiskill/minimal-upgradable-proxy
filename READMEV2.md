@@ -56,7 +56,7 @@ RETURN              [result 00]
 7fxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx73yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy8155603a80604760403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3
 ```
 
-* deployed code 
+* deployedcode 
 wherein the bytes at indices 10 - 41 (inclusive) are replaced with the 32 byte slot of the master after created
 ```
 363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3

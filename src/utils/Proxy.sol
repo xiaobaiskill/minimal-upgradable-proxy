@@ -6,7 +6,7 @@ abstract contract Proxy {
 
     event Upgraded(address indexed implementation);
 
-    function getImplementSlot() external pure returns (uint256 slot) {
+    function getImplementSlot() public pure returns (uint256 slot) {
         assembly {
             slot := implementation.slot
         }

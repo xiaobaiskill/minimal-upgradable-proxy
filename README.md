@@ -1,6 +1,6 @@
 minimal upgradable proxy
 ---
-add a slot of 32 bytes and an address of 32 bytes at the end of the bytecode when deploying contract, completed the creation of the proxy contract 
+add a slot of 32 bytes(`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`) and an address of 32 bytes(`yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy`) at the end of the bytecode when deploying contract, completed the creation of the proxy contract 
 ### create upgradable proxy contract
 ```
 # store logic address to slot of proxy contract
@@ -66,10 +66,10 @@ RETURN              [result 00]
 
 * bytecode
 ```
-602080604038033d39808038038139513d51553d51603a80602460403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3
+602080604038033d39808038038139513d51553d51603a80602460403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 ```
 
-* deployed code 
+* deployedcode 
 wherein the bytes at indices 10 - 41 (inclusive) are replaced with the 32 byte slot of the master after created
 ```
 363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3
