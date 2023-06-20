@@ -11,6 +11,7 @@ contract DeployContractTest is Test {
 
     function setUp() public {
         dc = new DeployContract();
+        vm.deal(address(this), 100 ether);
     }
 
     function testProxy() public {

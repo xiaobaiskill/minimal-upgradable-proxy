@@ -9,7 +9,9 @@ contract ProxyTest is Test {
     bytes constant proxyCode =
         hex"602080604038033d39808038038139513d51553d51603a80602460403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3";
 
-    function setUp() public {}
+    function setUp() public {
+        vm.deal(address(this), 100 ether);
+    }
 
     function testProxy() public {
         SimV1 v1 = new SimV1(11);
