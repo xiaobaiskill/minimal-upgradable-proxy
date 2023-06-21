@@ -6,12 +6,7 @@ import "src/mock/SimV1.sol";
 import "src/mock/SimV2.sol";
 
 contract ProxyTest is Test {
-    bytes constant proxyCode =
-        hex"602080604038033d39808038038139513d51553d51603a80602460403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3";
-
-    function setUp() public {
-        vm.deal(address(this), 100 ether);
-    }
+    function setUp() public {}
 
     function testProxy() public {
         SimV1 v1 = new SimV1(11);
@@ -46,11 +41,14 @@ contract ProxyTest is Test {
         returns (address proxy)
     {
         bytes memory code = abi.encodePacked(
-            proxyCode,
-            abi.encode(slot, logic)
+            hex"7f",
+            slot,
+            hex"73",
+            logic,
+            hex"8155600a604c3d39600a5260106056602a39603a3df3363d3d373d3d3d363d7f545af43d82803e3d8282603857fd5bf3"
         );
         assembly {
-            proxy := create2(0, add(code, 0x20), mload(code), 0x1)
+            proxy := create2(0, add(code, 0x20), mload(code), 0x0)
             if iszero(extcodesize(proxy)) {
                 revert(0, 0)
             }

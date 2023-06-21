@@ -7,11 +7,10 @@ import "src/mock/SimV2.sol";
 import "src/DeployContract.sol";
 
 contract DeployContractTest is Test {
-    DeployContract dc;
+    DeployContractV2 dc;
 
     function setUp() public {
-        dc = new DeployContract();
-        vm.deal(address(this), 100 ether);
+        dc = new DeployContractV2();
     }
 
     function testProxy() public {

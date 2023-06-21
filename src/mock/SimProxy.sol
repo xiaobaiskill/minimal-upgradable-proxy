@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "src/utils/Proxy.sol";
 import "forge-std/console2.sol";
 
-contract SimProxyV2 is Proxy {
+contract SimProxy is Proxy {
     address public owner;
     uint256 public number;
 

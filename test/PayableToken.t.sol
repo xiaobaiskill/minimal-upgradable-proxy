@@ -59,7 +59,7 @@ contract PayableTokenTest is Test {
             abi.encode(slot, logic)
         );
         assembly {
-            proxy := create2(0, add(code, 0x20), mload(code), 0x1)
+            proxy := create2(0, add(code, 0x20), mload(code), 0x0)
             if iszero(extcodesize(proxy)) {
                 revert(0, 0)
             }
