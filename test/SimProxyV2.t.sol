@@ -24,7 +24,7 @@ contract ProxyTest is Test {
             abi.encodePacked(
                 hex"ff",
                 _logic,
-                bytes32(uint256(1)),
+                bytes32(uint256(0)),
                 keccak256(
                     abi.encodePacked(
                         hex"7f",

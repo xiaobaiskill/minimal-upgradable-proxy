@@ -28,7 +28,7 @@ contract SimProxyV2Script is Script {
             abi.encodePacked(
                 hex"ff",
                 _logic,
-                bytes32(uint256(1)),
+                bytes32(0),
                 keccak256(
                     abi.encodePacked(
                         hex"7f",

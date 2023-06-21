@@ -1,40 +1,31 @@
 minimal upgradable proxy
 ---
-add a slot of 32 bytes(`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`) and an address of 32 bytes(`yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy`) at the end of the bytecode when deploying contract, completed the creation of the proxy contract 
+
+replace `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` to a slot of 32bytes and replace `yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy` to a address of 20bytes before deploying contract 
+
 ### create upgradable proxy contract
 ```
 # store logic address to slot of proxy contract
-PUSH1 0x20           [20]
-DUP1                 [20 20]
-PUSH1 0x40           [40 20 20]
-CODESIZE             [codesize 40 20 20]
-SUB                  [slotOffset 20 20]
-RETURNDATASIZE       [00 slotOffset 20 20]
-CODECOPY             [20]                  => memory(0~0x20: slot)
-DUP1                 [20 20]
-DUP1                 [20 20 20]
-CODESIZE             [codesize 20 20 20]
-SUB                  [logicAddressOffset 20 20]
-DUP2                 [20 logicAddressOffset 20 20]
-CODECOPY             [20]                  => memory(0x20~0x40: logicAddress)
-MLOAD                [logicAddress]
-RETURNDATASIZE       [00 logicAddress]
-MLOAD                [slot logicAddress]
-SSTORE               []              ==> storage(slot => logicAddress)
+PUSH32 <slot>          [slot]
+PUSH20 <logicAddress>  [logicAddress slot]
+DUP2                   [slot logicAddress slot]
+SSTORE                 [slot]                  => storage(slot => logicAddress)
 
 # return deployedCode
-RETURNDATASIZE       [00]
-MLOAD                [slot]
-PUSH1 0x3a           [3a slot]
-DUP1                 [3a 3a slot]
-PUSH1 0x24           [24 3a 3a slot]  
-PUSH1 0x40           [40 24 3a 3a slot]
-CODECOPY             [3a slot]  ==> memory(0x40~0x7a: 24~3a(deployedCode))
-SWAP1                [slot 3a]
-PUSH1 0x4a           [4a slot 3a]               
-MSTORE               [3a]      => memory(4a => slot)
-PUSH1 0x40           [40 3a]
+PUSH1 0xa              [0xa slot]
+PUSH1 0x4c             [4c 0xLEN1 slot]
+RETURNDATASIZE         [00 4c 0xLEN1 slot]
+CODECOPY               [slot]         ==> memory(0x00~0xa: 0x4c~0x56(deployedCode1))
+PUSH1 0x0a             [0a slot]    
+MSTORE                                ==> memory(0xa: slot)
+PUSH1 0x10           [10]
+PUSH1 0x56           [56 10]
+PUSH1 0x2a           [2a 56 10]     
+CODECOPY                              ==> memory(0x2a~0x3a: 0x56~0x66(deployedCode2))
+PUSH1 0x3a           [3a]
+RETURNDATASIZE       [00 3a]
 RETURN
+
 
 # proxy contract (deployedcode)
 CALLDATASIZE        [calldatasize] 
@@ -46,7 +37,7 @@ RETURNDATASIZE      [00 00]
 RETURNDATASIZE      [00 00 00]
 CALLDATASIZE        [calldatasize 00 00 00]
 RETURNDATASIZE      [00 calldatasize 00 00 00]
-PUSH32 0x0000000000000000000000000000000000000000000000000000000000000000       [slot 00 calldatasize 00 00 00] 
+PUSH32              [slot 00 calldatasize 00 00 00] 
 SLOAD               [logicAddress 00 calldatasize 00 00 00]
 GAS                 [gas logicAddress 00 calldatasize 00 00 00]
 DELEGATECALL        [result 00]
@@ -66,11 +57,11 @@ RETURN              [result 00]
 
 * bytecode
 ```
-602080604038033d39808038038139513d51553d51603a80602460403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+7fxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx73yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy8155600a604c3d39600a5260106056602a39603a3df3363d3d373d3d3d363d7f545af43d82803e3d8282603857fd5bf3
 ```
 
 * deployedcode 
 wherein the bytes at indices 10 - 41 (inclusive) are replaced with the 32 byte slot of the master after created
 ```
-363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3
+363d3d373d3d3d363d7fxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx545af43d82803e3d8282603857fd5bf3
 ```
