@@ -33,7 +33,7 @@ contract ProxyScript is Script {
             implement(_logic).getImplementSlot(),
             hex"73",
             _logic,
-            hex"8155603a80604760403990604a526040f3363d3d373d3d3d363d7f0000000000000000000000000000000000000000000000000000000000000000545af43d82803e3d8282603857fd5bf3"
+            hex"8155600a604c3d39600a5260106056602a39603a3df3363d3d373d3d3d363d7f545af43d82803e3d8282603857fd5bf3"
         );
         assembly {
             proxy := create(0, add(code, 0x20), mload(code))
