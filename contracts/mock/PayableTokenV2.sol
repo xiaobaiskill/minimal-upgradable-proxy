@@ -1,15 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "src/utils/Proxy.sol";
+import "contracts/utils/Proxy.sol";
 
-contract SimV2 is Proxy {
+contract PayableTokenV2 is Proxy {
     address public owner;
     uint256 public number;
-
-    constructor(uint256 _number) {
-        number = _number;
-    }
 
     modifier OnlyOwner() {
         require(owner == msg.sender, "only owner");
@@ -24,11 +20,8 @@ contract SimV2 is Proxy {
         _upgrade(_newImplement);
     }
 
-    function setNumber(uint256 _number) external OnlyOwner {
+    function setNumber(uint256 _number) external payable {
+        require(msg.value >= 1 ether, "Insufficient amount");
         number = _number;
-    }
-
-    function addNumber(uint256 _num) external {
-        number += _num;
     }
 }

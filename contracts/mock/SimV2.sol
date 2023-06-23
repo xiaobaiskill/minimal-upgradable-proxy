@@ -1,9 +1,9 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "src/utils/Proxy.sol";
+import "contracts/utils/Proxy.sol";
 
-contract SimV1 is Proxy {
+contract SimV2 is Proxy {
     address public owner;
     uint256 public number;
 
@@ -26,5 +26,9 @@ contract SimV1 is Proxy {
 
     function setNumber(uint256 _number) external OnlyOwner {
         number = _number;
+    }
+
+    function addNumber(uint256 _num) external {
+        number += _num;
     }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "src/utils/Proxy.sol";
+import "contracts/utils/Proxy.sol";
 
 contract PayableToken is Proxy {
     address public owner;

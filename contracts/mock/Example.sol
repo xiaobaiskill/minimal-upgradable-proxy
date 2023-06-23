@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "src/utils/Proxy.sol";
+import "contracts/utils/Proxy.sol";
 
 contract ExampleV1 is Proxy {
     uint256 public number;
@@ -13,7 +13,7 @@ contract ExampleV1 is Proxy {
             getImplementSlot(),
             hex"73",
             address(this),
-            hex"8155600a604c3d39600a5260106056602a39603a3df3363d3d373d3d3d363d7f545af43d82803e3d8282603857fd5bf3"
+            hex"81556009604c3d396009526010605560293960395ff3365f5f375f5f365f7f545af43d5f5f3e3d5f82603757fd5bf3"
         );
         assembly {
             let proxy := create2(0, add(code, 0x20), mload(code), 0x0)

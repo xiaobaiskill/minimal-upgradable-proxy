@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "src/interface/Implement.sol";
+import "contracts/interface/Implement.sol";
 
 abstract contract Proxy is Implement {
     address private implementation;
