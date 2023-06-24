@@ -1,4 +1,4 @@
-import { PayableToken } from "./../typechain/PayableToken";
+import { PayableToken } from "../typechain/PayableToken";
 import { Provider } from "@ethersproject/providers";
 import { Contract, Wallet } from "ethers";
 import { expect } from "chai";
@@ -6,23 +6,23 @@ import { ethers } from "hardhat";
 import { pack } from "@ethersproject/solidity";
 
 let proxyContract: PayableToken;
-describe("pay to upgradable contract", function () {
+describe("pay to upgradable contract for 1 byte slot", function () {
   before("deploy minimal upgradable proxy", async function () {
     // deploy SimV1
-    const V1 = await ethers.getContractFactory("PayableToken");
+    const V1 = await ethers.getContractFactory("PayableTokenV1");
     const v1 = await V1.deploy();
     await v1.deployed();
     console.log("logic PayableToken contract", v1.address);
 
     // deploy proxy contract
     const code = pack(
-      ["bytes1", "uint256", "bytes1", "address", "bytes"],
+      ["bytes1", "uint8", "bytes1", "address", "bytes"],
       [
-        "0x7f",
+        "0x60",
         await v1.getImplementSlot(),
         "0x73",
         v1.address,
-        "0x81556009604c3d396009526010605560293960395ff3365f5f375f5f365f7f545af43d5f5f3e3d5f82603757fd5bf3",
+        "0x8155600960305f3960f81b60095260106039600a39601a5ff3365f5f375f5f365f60545af43d5f5f3e3d5f82601857fd5bf3",
       ]
     );
     const Proxy = new ethers.ContractFactory(

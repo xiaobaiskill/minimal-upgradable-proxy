@@ -6,12 +6,12 @@ import { ethers } from "hardhat";
 import { pack } from "@ethersproject/solidity";
 
 let proxyContract: ExampleV1;
-describe("example test", function () {
+describe("example test for 32 bytes slot", function () {
   before(
     "deploy minimal upgradable proxy when deploying logic contract",
     async function () {
       // deploy SimV1
-      const V1 = await ethers.getContractFactory("ExampleV1");
+      const V1 = await ethers.getContractFactory("Example32V1");
       const v1 = await V1.deploy();
       await v1.deployed();
       console.log("logic payable contract", v1.address);
@@ -46,7 +46,7 @@ describe("example test", function () {
 
   it("upgrade", async function () {
     // deploy SimV1
-    const V2 = await ethers.getContractFactory("ExampleV2");
+    const V2 = await ethers.getContractFactory("Example32V2");
     const v2 = await V2.deploy();
     await v2.deployed();
     console.log("logic v2 contract", v2.address);

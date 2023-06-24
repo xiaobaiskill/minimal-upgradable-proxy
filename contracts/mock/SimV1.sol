@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-import "contracts/utils/Proxy.sol";
-
-contract SimV1 is Proxy {
+contract SimV1 {
     address public owner;
     uint256 public number;
+    address private implementation;
+
+    event Upgraded(address indexed implementation);
 
     constructor(uint256 _number) {
         number = _number;
@@ -20,8 +21,15 @@ contract SimV1 is Proxy {
         owner = msg.sender;
     }
 
-    function upgrade(address _newImplement) external OnlyOwner {
-        _upgrade(_newImplement);
+    function getImplementSlot() external pure returns (uint256 slot) {
+        assembly {
+            slot := implementation.slot
+        }
+    }
+
+    function upgrade(address _newImplementation) external OnlyOwner {
+        implementation = _newImplementation;
+        emit Upgraded(_newImplementation);
     }
 
     function setNumber(uint256 _number) external OnlyOwner {

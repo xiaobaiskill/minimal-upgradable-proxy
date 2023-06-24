@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "contracts/utils/Proxy.sol";
-
-contract PayableToken is Proxy {
+contract PayableTokenV1 {
+    address private implementation;
     address public owner;
     uint256 public number;
+
+    event Upgraded(address indexed implementation);
 
     receive() external payable {
         number += 1;
@@ -24,8 +25,15 @@ contract PayableToken is Proxy {
         owner = msg.sender;
     }
 
-    function upgrade(address _newImplement) external OnlyOwner {
-        _upgrade(_newImplement);
+    function getImplementSlot() external pure returns (uint256 slot) {
+        assembly {
+            slot := implementation.slot
+        }
+    }
+
+    function upgrade(address _newImplementation) external OnlyOwner {
+        implementation = _newImplementation;
+        emit Upgraded(_newImplementation);
     }
 
     function setNumber(uint256 _number) external payable {
