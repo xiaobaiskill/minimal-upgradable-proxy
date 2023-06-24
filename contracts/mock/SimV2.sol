@@ -22,7 +22,7 @@ contract SimV2 {
         owner = msg.sender;
     }
 
-    function getImplementSlot() external pure returns (uint256 slot) {
+    function getImplementSlot() external pure returns (bytes32 slot) {
         assembly {
             slot := implementation.slot
         }

@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { pack } from "@ethersproject/solidity";
 
 async function main() {
-  const Examplev1 = await ethers.getContractFactory("ExampleV1");
+  const Examplev1 = await ethers.getContractFactory("Example32V1");
   const examplev1 = await Examplev1.deploy();
   await examplev1.deployed();
 
@@ -24,13 +24,13 @@ async function main() {
   );
   console.log("proxy contract", proxyAddr);
 
-  await examplev1.attach(proxyAddr).setNumber(11);
+  await (await examplev1.attach(proxyAddr).setNumber(11)).wait();
 
-  const Examplev2 = await ethers.getContractFactory("ExampleV2");
+  const Examplev2 = await ethers.getContractFactory("Example32V2");
   const examplev2 = await Examplev2.deploy();
   await examplev2.deployed();
 
-  await examplev1.attach(proxyAddr).upgrade(examplev2.address);
+  await (await examplev1.attach(proxyAddr).upgrade(examplev2.address)).wait();
   const tx = await examplev2.attach(proxyAddr).addNumber(1);
   await tx.wait();
   console.log("number:", await examplev2.attach(proxyAddr).number());
