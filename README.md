@@ -26,7 +26,6 @@ PUSH1 0x39             [0x39]
 PUSH0                  [00 0x39]
 RETURN
 
-
 # proxy contract (deployedcode)
 CALLDATASIZE        [calldatasize] 
 PUSH0               [00 calldatasize]
@@ -69,7 +68,7 @@ wherein the bytes at indices 9 - 40 (inclusive) are replaced with the 32 byte sl
 
 
 ## 2 create upgradable proxy contract (1 byte slot)
-If the slot value for storing the logic contract address is within the range of 255(inclusive), then create minimal upgradable proxy using the following code
+If the slot value for storing the logic contract address is within 1 ~ 255(inclusive), then create minimal upgradable proxy using the following code
 
 ### 2.1 evm opcode
 
@@ -84,7 +83,7 @@ SSTORE                 [slot]          => storage(slot => logicAddress)
 PUSH1 0x9              [0x9 slot]
 PUSH1 0x30             [0x30 0x9 slot]
 PUSH0                  [00 0x30 0x9 slot]
-CODECOPY               [slot]          ==> memory(0x00~0x8: 0x30~0x54(deployedCode1stPart))
+CODECOPY               [slot]          ==> memory(0x00~0x8: 0x30~0x38(deployedCode1stPart))
 PUSH1 0xf8             [0xf8 slot]
 SHL                    [slotAfterShl]
 PUSH1 0x9              [0x9 slotAfterShl]    
@@ -92,11 +91,10 @@ MSTORE                 []              ==> memory(0x9: slotAfterShl(deployedCode
 PUSH1 0x10             [0x10]
 PUSH1 0x39             [0x39 0x10]
 PUSH1 0xa              [0xa 0x39 0x10]     
-CODECOPY               []              ==> memory(0xa~0x38: 0x39~0x64(deployedCode3rdPart))
+CODECOPY               []              ==> memory(0xa~0x19: 0x39~0x48(deployedCode3rdPart))
 PUSH1 0x1a             [0x1a]
 PUSH0                  [00 0x1a]
 RETURN
-
 
 # proxy contract (deployedcode)
 CALLDATASIZE        [calldatasize] 
@@ -137,4 +135,74 @@ replace `xx` to a slot of 1byte and replace `yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 wherein the bytes at indices 9 are replaced with the 1 byte slot of the master after created
 ```
 365f5f375f5f365f60xx545af43d5f5f3e3d5f82601857fd5bf3
+```
+
+
+
+## 3 create upgradable proxy contract (slot of logic address is zero )
+
+If the slot value for storing the logic contract address is 0, then create minimal upgradable proxy using the following code
+
+### 3.1 evm opcode
+
+```
+# store logic address to slot of proxy contract
+PUSH20 <logicAddress>  [logicAddress]
+PUSH0                  [00 logicAddress]
+SSTORE                 []          => storage(00 => logicAddress)
+
+# return deployedCode
+PUSH1 0x9              [0x9]
+PUSH1 0x28             [0x28 0x9]
+PUSH0                  [00 0x28 0x9]
+CODECOPY               []          ==> memory(0x00~0x8: 0x28~0x30(deployedCode1stPart))
+PUSH1 0x10             [0x10]
+PUSH1 0x31             [0x31 0x10]
+PUSH1 0x9              [0x9 0x31 0x10]     
+CODECOPY               []              ==> memory(0x9~0x19: 0x31~0x41(deployedCode2ndPart))
+PUSH1 0x19             [0x19]
+PUSH0                  [00 0x19]
+RETURN
+
+# proxy contract (deployedcode)
+CALLDATASIZE        [calldatasize] 
+PUSH0               [00 calldatasize]
+PUSH0               [00 00 calldatasize]
+CALLDATACOPY        []     ==> memory(00~(calldatasize-1) => codedata)
+PUSH0               [00]
+PUSH0               [00 00]
+CALLDATASIZE        [calldatasize 00 00]
+PUSH0               [00 calldatasize 00 00]
+PUSH0               [00 00 calldatasize 00 00] 
+SLOAD               [logicAddress 00 calldatasize 00 00]
+GAS                 [gas logicAddress 00 calldatasize 00 00]
+DELEGATECALL        [result]
+RETURNDATASIZE      [returnDataSize result]
+PUSH0               [00 returnDataSize result]
+PUSH0               [00 00 returnDataSize result]
+RETURNDATACOPY      [result] => memory(00~(RETURNDATASIZE - 1) => RETURNDATA)
+RETURNDATASIZE      [returnDataSize result] 
+PUSH0               [00 returnDataSize result] 
+DUP3                [result 00 returnDataSize result]
+PUSH1 0x17          [0x17 result 00 returnDataSize result]
+JUMPI				[00 returnDataSize result]
+REVERT              [result]
+JUMPDEST            [00 returnDataSize result]
+RETURN              [result]
+```
+
+
+
+
+### 3.2 evm opcode to code
+
+* bytecode
+replace `yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy` to a address of 20bytes before deploying contract 
+```
+73yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy5f55600960285f396010603160093960195ff3365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3
+```
+
+* deployedcode 
+```
+365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3
 ```
