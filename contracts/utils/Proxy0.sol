@@ -20,8 +20,8 @@ abstract contract Proxy0 {
                 hex"5f55600960285f396010603160093960195ff3365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3"
             );
             assembly {
-                // deploy proxy using create2
-                let proxy := create2(0, add(code, 0x20), mload(code), 0x0)
+                // deploy proxy using create
+                let proxy := create(0, add(code, 0x20), mload(code))
                 if iszero(extcodesize(proxy)) {
                     revert(0, 0)
                 }
