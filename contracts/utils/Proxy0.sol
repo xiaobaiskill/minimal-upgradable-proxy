@@ -2,6 +2,9 @@
 pragma solidity ^0.8.0;
 
 abstract contract Proxy0 {
+    // implementation must be 0.
+    // When inheriting this contract, please place it in the first inheritance position.
+    // example: contract xxx is Proxy0,....
     address private implementation;
 
     event Upgraded(address indexed implementation);
