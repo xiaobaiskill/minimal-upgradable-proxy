@@ -152,14 +152,10 @@ PUSH0                  [00 logicAddress]
 SSTORE                 []          => storage(00 => logicAddress)
 
 # return deployedCode
-PUSH1 0x9              [0x9]
-PUSH1 0x28             [0x28 0x9]
-PUSH0                  [00 0x28 0x9]
-CODECOPY               []          ==> memory(0x00~0x8: 0x28~0x30(deployedCode1stPart))
-PUSH1 0x10             [0x10]
-PUSH1 0x31             [0x31 0x10]
-PUSH1 0x9              [0x9 0x31 0x10]     
-CODECOPY               []              ==> memory(0x9~0x19: 0x31~0x41(deployedCode2ndPart))
+PUSH1 0x19             [0x19]
+PUSH1 0x21             [0x21 0x19]
+PUSH0                  [00 0x21 0x19]
+CODECOPY               []              ==> memory(0x0~0x19: 0x21~0x3a(deployed code))
 PUSH1 0x19             [0x19]
 PUSH0                  [00 0x19]
 RETURN
@@ -199,7 +195,8 @@ RETURN              [result]
 * bytecode
 replace `yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy` to a address of 20bytes before deploying contract 
 ```
-73yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy5f55600960285f396010603160093960195ff3365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3
+73yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy5f55601960215f3960195ff3365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3
+
 ```
 
 * deployedcode 

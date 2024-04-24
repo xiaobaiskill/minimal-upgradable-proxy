@@ -20,8 +20,9 @@ abstract contract Proxy0 {
             bytes memory code = abi.encodePacked(
                 hex"73",
                 address(this),
-                hex"5f55600960285f396010603160093960195ff3365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3"
+                hex"5f55601960215f3960195ff3365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3"
             );
+
             assembly {
                 // deploy proxy using create
                 let proxy := create(0, add(code, 0x20), mload(code))

@@ -12,7 +12,7 @@ async function main() {
     [
       "0x73",
       v1.address,
-      "0x5f55600960285f396010603160093960195ff3365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3",
+      "0x5f55601960215f3960195ff3365f5f375f5f365f5f545af43d5f5f3e3d5f82601757fd5bf3",
     ]
   );
   const Proxy = new ethers.ContractFactory(
