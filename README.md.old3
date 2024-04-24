@@ -10,12 +10,12 @@ RETURNDATASIZE         [slot0 logicAddress]
 SSTORE                 []                  => storage(slot0 => logicAddress)
 
 # return deployedCode
-PUSH1 0x19             [0x19]
-PUSH1 0x21             [0x21 0x19]
-RETURNDATASIZE         [00 0x21 0x19]
-CODECOPY               []          ==> memory(0x00~0x19: 0x21~0x3a(deployed code))
-PUSH1 0x19             [0x19]
-RETURNDATASIZE         [00 0x19]
+PUSH1 0x1a             [0x1a]
+PUSH1 0x21             [0x21 0x1a]
+RETURNDATASIZE         [00 0x21 0x1a]
+CODECOPY               []          ==> memory(0x00~0x1a: 0x21~0x3b(deployedCode1stPart))
+PUSH1 0x1a             [0x1a]
+RETURNDATASIZE         [00 0x1a]
 RETURN
 
 
@@ -26,24 +26,25 @@ RETURNDATASIZE      [00 00 calldatasize]
 CALLDATACOPY        []     ==> memory(00~calldatasize => codedata)
 RETURNDATASIZE      [00]
 RETURNDATASIZE      [00 00]
-CALLDATASIZE        [calldatasize 00 00]
-RETURNDATASIZE      [00 calldatasize 00 00]
-RETURNDATASIZE      [00 00 calldatasize 00 00] 
-SLOAD               [logicAddress 00 calldatasize 00 00]
-GAS                 [gas logicAddress 00 calldatasize 00 00]
-DELEGATECALL        [result]
-RETURNDATASIZE      [returnDataSize result]
-DUP3                [00 returnDataSize result]
-DUP1                [00 00 returnDataSize result]
-RETURNDATACOPY      [result] => memory(00~RETURNDATASIZE => RETURNDATA)
-RETURNDATASIZE      [returnDataSize result] 
-DUP3                [00 returnDataSize result] 
-DUP3                [result 00 returnDataSize result]
-PUSH1 0x17          [0x17 result 00 returnDataSize result]
-JUMPI				[00 returnDataSize result]
-REVERT              [result]
-JUMPDEST            [00 returnDataSize result]
-RETURN              [result]
+RETURNDATASIZE      [00 00 00]
+CALLDATASIZE        [calldatasize 00 00 00]
+RETURNDATASIZE      [00 calldatasize 00 00 00]
+RETURNDATASIZE      [00 00 calldatasize 00 00 00] 
+SLOAD               [logicAddress 00 calldatasize 00 00 00]
+GAS                 [gas logicAddress 00 calldatasize 00 00 00]
+DELEGATECALL        [result 00]
+RETURNDATASIZE      [returnDataSize result 00]
+DUP3                [00 returnDataSize result 00]
+DUP1                [00 00 returnDataSize result 00]
+RETURNDATACOPY      [result 00] => memory(00~RETURNDATASIZE => RETURNDATA)
+RETURNDATASIZE      [returnDataSize result 00] 
+DUP3                [00 returnDataSize result 00] 
+DUP3                [result 00 returnDataSize result 00]
+PUSH1 0x18          [0x18 result 00 returnDataSize result 00]
+JUMPI				[00 returnDataSize result 00]
+REVERT              [result 00]
+JUMPDEST            [00 returnDataSize result 00]
+RETURN              [result 00]
 ```
 
 
@@ -51,12 +52,11 @@ RETURN              [result]
 replace `yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy` to a address of 20bytes before deploying contract 
 
 ```
-
-73yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy3d55601960213d3960193df3363d3d373d3d363d3d545af43d82803e3d8282601757fd5bf3
+73yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy3d55601a60213d39601a3df3363d3d373d3d3d363d3d545af43d82803e3d8282601857fd5bf3
 ```
 
 * deployedcode 
 wherein the bytes at indices 10 - 41 (inclusive) are replaced with the 32 byte slot of the master after created
 ```
-363d3d373d3d363d3d545af43d82803e3d8282601757fd5bf3
+363d3d373d3d3d363d3d545af43d82803e3d8282601857fd5bf3
 ```
