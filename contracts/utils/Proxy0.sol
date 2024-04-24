@@ -25,7 +25,7 @@ abstract contract Proxy0 {
 
             assembly {
                 // deploy proxy using create
-                let proxy := create(0, add(code, 0x20), mload(code))
+                let proxy := create2(0, add(code, 0x20), mload(code), 0x0)
                 if iszero(extcodesize(proxy)) {
                     revert(0, 0)
                 }
